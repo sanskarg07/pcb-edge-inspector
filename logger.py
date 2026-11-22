@@ -14,7 +14,7 @@ def log_record(record, advice="", timings=None, path=LOG_PATH):
     entry["advice"] = advice
     entry["timings_ms"] = timings or {}
     with open(path, "a", encoding="utf-8") as f:
-        f.write(json.dumps(entry) + "\n")
+        f.write(json.dumps(entry, default=float) + "\n")
 
 
 def read_log(path=LOG_PATH, last_n=None):
