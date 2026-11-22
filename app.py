@@ -19,8 +19,9 @@ def load_detector():
 
 det = load_detector()
 
-src = st.sidebar.radio("Image source", ["Sample tiles", "Upload image"])
+src = st.sidebar.radio("Image source", ["Sample tiles", "Upload image", "Camera snapshot"])
 img, name = None, ""
+
 if src == "Sample tiles":
     only_defects = st.sidebar.checkbox("Only tiles that contain defects", True)
     files = sorted(glob.glob("data/tiled/images/val/*.jpg"))
@@ -30,15 +31,20 @@ if src == "Sample tiles":
     name = st.sidebar.selectbox("Tile", files, format_func=lambda p: os.path.basename(p))
     if name:
         img = cv2.imread(name)
-else:
+elif src == "Upload image":
     up = st.sidebar.file_uploader("Upload a PCB image", type=["jpg", "jpeg", "png"])
     if up:
         img = cv2.imdecode(np.frombuffer(up.read(), np.uint8), 1)
         name = up.name
+else:
+    snap = st.sidebar.camera_input("Point the camera at the board")
+    if snap:
+        img = cv2.imdecode(np.frombuffer(snap.getvalue(), np.uint8), 1)
+        name = "camera_" + time.strftime("%H%M%S") + ".jpg"
 
 if img is not None and st.button("Inspect", type="primary"):
     t0 = time.time()
-    dets = det.detect(img)
+    dets = det.detect_tiled(img)
     t1 = time.time()
     rec = build_record(os.path.basename(name), dets, img.shape[1], img.shape[0])
     advice, source = get_advice(rec)

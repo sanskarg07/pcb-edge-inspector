@@ -43,3 +43,34 @@ class Detector:
                          "bbox": [float(max(0, x1[i])), float(max(0, y1[i])),
                                   float(min(w, x2[i])), float(min(h, y2[i]))]})
         return dets
+
+
+    def detect_tiled(self, img, tile=640, stride=480):
+        """Detect on large images by tiling, then merge overlapping boxes."""
+        h, w = img.shape[:2]
+        if max(h, w) <= tile * 1.2:
+            return self.detect(img)
+
+        def starts(n):
+            pos = list(range(0, max(n - tile, 0) + 1, stride))
+            if pos[-1] + tile < n:
+                pos.append(n - tile)
+            return pos
+
+        boxes, scores, names = [], [], []
+        for ty in starts(h):
+            for tx in starts(w):
+                for d in self.detect(img[ty:ty + tile, tx:tx + tile]):
+                    x1, y1, x2, y2 = d["bbox"]
+                    boxes.append([x1 + tx, y1 + ty, x2 - x1, y2 - y1])
+                    scores.append(d["confidence"])
+                    names.append(d["defect"])
+        if not boxes:
+            return []
+        idx = cv2.dnn.NMSBoxes(boxes, scores, self.conf, self.iou)
+        out = []
+        for i in np.array(idx).flatten():
+            x, y, bw, bh = boxes[i]
+            out.append({"defect": names[i], "confidence": float(scores[i]),
+                        "bbox": [float(x), float(y), float(x + bw), float(y + bh)]})
+        return out
