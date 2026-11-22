@@ -49,10 +49,10 @@ def rate_defect(det, frame_w, frame_h):
         level = bump(level, +1)
         reasons.append("large defect, raised one level")
 
-    near_edge = cx < EDGE_MARGIN or cx > 1 - EDGE_MARGIN or cy < EDGE_MARGIN or cy > 1 - EDGE_MARGIN
-    if near_edge:
-        level = bump(level, -1)
-        reasons.append("near board edge, lowered one level")
+    # near_edge = cx < EDGE_MARGIN or cx > 1 - EDGE_MARGIN or cy < EDGE_MARGIN or cy > 1 - EDGE_MARGIN
+    # if near_edge:
+    #     level = bump(level, -1)
+    #     reasons.append("near board edge, lowered one level")
 
     return {
         "defect": det["defect"],
