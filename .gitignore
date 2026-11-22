@@ -5,3 +5,6 @@ runs/
 *.onnx
 logs/
 __pycache__/
+models/
+models/
+docs/
