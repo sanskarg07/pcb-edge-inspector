@@ -67,7 +67,7 @@ if img is not None and st.button("Inspect", type="primary"):
         {"PASS": st.success, "REVIEW": st.warning, "FAIL": st.error}[rec["result"]](msg)
         st.subheader("Advice")
         st.text(advice)
-        st.caption(f"Advice source: {source} | detection {(t1 - t0) * 1000:.0f} ms")
+        st.caption(f"Advice source: {source} | detection {(t1 - t0) * 1000:.0f} ms | advice {(t2 - t1) * 1000:.0f} ms")
         if rec["defects"]:
             st.dataframe([{k: d[k] for k in ("defect", "severity", "confidence", "location", "reason")}
                           for d in rec["defects"]])
