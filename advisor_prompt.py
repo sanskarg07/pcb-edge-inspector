@@ -31,7 +31,7 @@ def build_messages(record):
             lines.append(
                 f"{i}. {d['defect']} ({DEFECT_NOTES[d['defect']]}), "
                 f"severity {d['severity']}, confidence {d['confidence']}, "
-                f"location {d['location']}, size {d['area_pct']}% of image."
+                f"location {d['location']}."
             )
         facts = f"Board result: {record['result']}.\n" + "\n".join(lines)
 
@@ -40,7 +40,8 @@ def build_messages(record):
         "Reply in exactly this format, with no extra text:\n"
         "SUMMARY: <one sentence on what was found>\n"
         "ACTION: <one sentence telling the operator what to do next>\n"
-        "Keep the whole reply under 40 words."
+        "Keep the whole reply under 40 words. "
+        "Do not mention percentages or add numbers together."
     )
     return [{"role": "system", "content": SYSTEM},
             {"role": "user", "content": user}]
