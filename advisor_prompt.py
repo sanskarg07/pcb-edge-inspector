@@ -39,7 +39,7 @@ def build_messages(record):
         f"Findings for board {record['board_id']}:\n{facts}\n\n"
         "Reply in exactly this format, with no extra text:\n"
         "SUMMARY: <one sentence on what was found>\n"
-        "ACTION: <one sentence telling the operator what to do next>\n"
+        "ACTION: <one sentence naming the defect type and one concrete check or step>\n"
         "Keep the whole reply under 40 words. "
         "Do not mention percentages or add numbers together."
     )
