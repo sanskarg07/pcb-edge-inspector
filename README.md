@@ -10,6 +10,24 @@ I'll be upfront about this, because it matters. I couldn't get an Arm board in t
 - The Llama advice you see in the app comes from Ollama on my laptop. That is a stand-in for development. It is not ExecuTorch.
 - I did cross-compile the ExecuTorch runtime for a Raspberry Pi 5, and I downloaded the model and tokenizer for it, but I never got to run it. The advice source is shown under every result in the app, so it's never hidden.
 
+## What it looks like
+
+The operator screen on a full board with several shorts. This is the laptop version, so the advice comes from Ollama, not ExecuTorch.
+
+![Full board marked FAIL](report_assets/app_fail_board.png)
+
+A close-up tile with two mouse bites, rated Medium, so the result is REVIEW.
+
+![Tile marked REVIEW](report_assets/app_review_tile.png)
+
+Confusion matrix on the 138 validation boards.
+
+![Confusion matrix](report_assets/confusion_matrix.png)
+
+Training curves for the 30-epoch run. Losses fall on both training and validation data, and mAP50 levels off near 0.97.
+
+![Training curves](report_assets/results.png)
+
 ## How it works
 
 1. A big board photo is cut into overlapping 640x640 tiles. The defects are tiny (about 2% of the image width), and shrinking the whole photo to 640 pixels would turn them into specks.
